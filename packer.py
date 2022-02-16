@@ -1,17 +1,16 @@
+from textwrap import shorten
 from typing import Optional
 import click
-from packer_lib import zipfiles
+from packer_lib import ZipFiles
 # Creates the arguments and options
 @click.command()
 @click.argument('action')
 @click.argument('file', required=False)
 @click.option('--password', default=None, help='Password for decrypting ZIP')
-def main(action, file, password):
-    if password == None:
-        password = ""
+def main(action, file, password=""):
     if action == 'shell':
         shell(action, file, password)
-    zipfiles.handleZip(action, file, password)
+    ZipFiles.handleZip(action, file, password)
 # Function for managing the shell of packer
 def shell(action, file, password):
     running = True
@@ -27,7 +26,7 @@ def shell(action, file, password):
             password = ""
         action = promptSplit[0]
         
-        zipfiles.handleZip(action, file, password)
+        ZipFiles.handleZip(action, file, password)
 
 # Runs the program
 if __name__ == '__main__':
