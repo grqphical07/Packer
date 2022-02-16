@@ -42,22 +42,31 @@ def setpwd(file, password):
         zipObj.setpassword(bytes(password, 'utf-8'))
 
 def handleZip(action, file, password=""):
-    if not os.path.exists(file):
-        print(f"ERROR: '{file}' does not exist")
-        return
+    if file != None:
+        if not os.path.exists(file):
+            print(f"ERROR: '{file}' does not exist")
+            return
     if password == None:
         password = ""
     # Extract function
     if action == 'extract':
+        if file == None:
+            print("ERROR: No File Specified")
         extract(file, password)
     # Lists all files in zip file
     elif action == 'list':
+        if file == None:
+            print("ERROR: No File Specified")
         list(file)
     # Creates a ZIP file out of a file or folder specified
     elif action == 'archive':
+        if file == None:
+            print("ERROR: No File Specified")
         archive(file)
     # Sets the password for the given ZIP file
     elif action == 'setpwd':
+        if file == None:
+            print("ERROR: No File Specified")
         setPwd = click.prompt("Please Enter Password", hide_input=True, confirmation_prompt=True, )
         setpwd(file, setPwd)
 
