@@ -1,13 +1,10 @@
-import click
 import zipfile
 import os
+import click
 
-# Creates the arguments and options
-@click.command()
-@click.argument('action')
-@click.argument('file')
-@click.option('--password', default=None, help='Password for decrypting ZIP')
-def main(action, file, password):
+def handleZip(action, file, password):
+    if password == None:
+        password = ""
     # Extract function
     if action == 'extract':
         with zipfile.ZipFile(file, 'r') as zipObj:
@@ -37,7 +34,20 @@ def main(action, file, password):
         setPwd = click.prompt("Please Enter Password:", hide_input=True, confirmation_prompt=True, )
         with zipfile.ZipFile(file, 'w') as zipObj:
             zipObj.setpassword(bytes(setPwd, 'utf-8'))
+    elif action == 'shell':
+        shell(action, file, password)
+def shell(action, file, password):
+    running = True
+    while running:
+        prompt = input("packer>> ")
+        if action == 'exit':
+            running = False
+        promptSplit = prompt.split()
+        file = promptSplit[1]
+        try:
+            password = promptSplit[2]
+        except:
+            password = ""
+        action = promptSplit[0]
         
-
-if __name__ == '__main__':
-    main()
+        handleZip(action, file, password)
